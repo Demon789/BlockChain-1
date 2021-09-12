@@ -142,32 +142,12 @@ binariesInstall() {
    fi
 
   echo "===> Downloading version ${CA_TAG} platform specific fabric-ca-client binary"
-  binaryDownload ${CA_BINARY_FILE} https://github.com/hyperledger/fabric/releases/org/hyperledger/fabric-ca/hyperledger-fabric-ca/${ARCH}-${CA_VERSION}/${CA_BINARY_FILE}
+  binaryDownload ${CA_BINARY_FILE} https://github.com/hyperledger/fabric-ca/releases/org/hyperledger/fabric-ca/hyperledger-fabric-ca/${ARCH}-${CA_VERSION}/${CA_BINARY_FILE}
   if [ $? -eq 22 ]; then
      echo
      echo "------> ${CA_TAG} fabric-ca-client binary is not available to download  (Available from 1.1.0-rc1) <----"
      echo
    fi
-}
-
-pullBinaries() {
-    echo "===> Downloading version ${FABRIC_TAG} platform specific fabric binaries"
-    download "${BINARY_FILE}" "https://github.com/hyperledger/fabric/releases/download/v${VERSION}/${BINARY_FILE}"
-    if [ $? -eq 22 ]; then
-        echo
-        echo "------> ${FABRIC_TAG} platform specific fabric binary is not available to download <----"
-        echo
-        exit
-    fi
-
-    echo "===> Downloading version ${CA_TAG} platform specific fabric-ca-client binary"
-    download "${CA_BINARY_FILE}" "https://github.com/hyperledger/fabric-ca/releases/download/v${CA_VERSION}/${CA_BINARY_FILE}"
-    if [ $? -eq 22 ]; then
-        echo
-        echo "------> ${CA_TAG} fabric-ca-client binary is not available to download  (Available from 1.1.0-rc1) <----"
-        echo
-        exit
-    fi
 }
 
 dockerInstall() {
@@ -196,11 +176,11 @@ BINARIES=true
 
 # Parse commandline args pull out
 # version and/or ca-version strings first
-if [! -z $1 -a ${1:0:1} != "-" ]; then
+if [ ! -z $1 -a ${1:0:1} != "-" ]; then
   VERSION=$1;shift
-  if [! -z $1 -a ${1:0:1} != "-" ]; then
+  if [ ! -z $1  -a ${1:0:1} != "-" ]; then
     CA_VERSION=$1;shift
-    if [! -z $1 -a ${1:0:1} != "-" ]; then
+    if [ ! -z $1  -a ${1:0:1} != "-" ]; then
       THIRDPARTY_IMAGE_VERSION=$1;shift
     fi
   fi
